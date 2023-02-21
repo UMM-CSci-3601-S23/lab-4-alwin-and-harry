@@ -170,14 +170,14 @@ public class TodoControllerSpec {
 
   @Test
   public void getUserWithNonexistentId() throws IOException {
-    String id = "789456123456789fdca58a1ac230";
+    String id = "588935f5c668650dc77df581";
     when(ctx.pathParam("id")).thenReturn(id);
 
     Throwable exception = assertThrows(NotFoundResponse.class, () -> {
       todoController.getTodo(ctx);
     });
 
-    assertEquals("The requested Todo was not found", exception.getMessage());
+    assertEquals("The requested todo was not found", exception.getMessage());
   }
 }
 
