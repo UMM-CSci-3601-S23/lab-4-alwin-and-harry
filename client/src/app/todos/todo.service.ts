@@ -15,6 +15,7 @@ export class TodoService {
 
   //Filtering using the database
 
+
   //Filtering using Angular
   //Body, owner, and, category are being filtered through Angular
 
