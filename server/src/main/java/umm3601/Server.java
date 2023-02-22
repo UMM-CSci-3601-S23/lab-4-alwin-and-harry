@@ -43,6 +43,7 @@ public class Server {
 
     // Initialize dependencies
     UserController userController = new UserController(database);
+    TodoController todoController = new TodoController(database);
 
     Javalin server = Javalin.create(config ->
       config.plugins.register(new RouteOverviewPlugin("/api"))
@@ -62,6 +63,7 @@ public class Server {
 
     server.start(SERVER_PORT);
 
+    //User apis
     // List users, filtered using query parameters
     server.get("/api/users", userController::getUsers);
 
@@ -75,6 +77,8 @@ public class Server {
     // of the HTTP request
     server.post("/api/users", userController::addNewUser);
 
+    //Todo apis
+    //List todos, filtered using query parameters
     server.get("/api/todos", todoController::getTodos);
 
     // This catches any uncaught exceptions thrown in the server
