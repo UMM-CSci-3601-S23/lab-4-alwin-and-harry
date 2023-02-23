@@ -67,11 +67,12 @@ public class TodoController {
     }
   }
 
-  public void getLimitedTodos(Context ctx) {
+  public int getLimitedTodos(Context ctx) {
     int limit = ctx.queryParamAsClass("limit", Integer.class).get();
     List<Todo> limitedTodos = todoCollection.find().limit(limit).into(new ArrayList<>());
     ctx.json(limitedTodos);
     ctx.status(HttpStatus.OK);
+    return limit;
 }
   /**
    * Set the JSON body of the response to be a list of all the users returned from the database
@@ -90,6 +91,7 @@ public class TodoController {
     ArrayList<Todo> matchingTodos = todoCollection
       .find(combinedFilter)
       .sort(sortingOrder)
+      .limit(0)
       .into(new ArrayList<>());
 
     // Set the JSON body of the response to be the list of users returned by the database.
