@@ -68,10 +68,10 @@ describe('TodoService', () => {
           .toEqual(testTodos);
         expect(mockedMethod)
           .withContext('one call')
-          .toHaveBeenCalled();
+          .toHaveBeenCalledTimes(1);
         expect(mockedMethod)
           .withContext('talks to the correct endpoint')
-          .toHaveBeenCalledWith(todoService.todoUrl, { params: new HttpParams().set('status', true) });
+          .toHaveBeenCalledWith(todoService.todoUrl, { params: new HttpParams().set('status', 'true') });
     });
   });
 });

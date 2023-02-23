@@ -20,7 +20,7 @@ export class TodoService {
     let httpParams: HttpParams = new HttpParams();
     if (filters) {
       if (filters.status) {
-        httpParams = httpParams.set('status', filters.status);
+        httpParams = httpParams.set('status', filters.status.toString());
       }
     }
 
