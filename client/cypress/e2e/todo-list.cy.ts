@@ -56,7 +56,7 @@ describe('Todo list', () => {
 
     //check if all given todos are complete
     page.getTodoListItems().each($list => {
-      cy.wrap($list).find('.todo-list-status').should('contain.text', 'true');
+      cy.wrap($list).find('.todo-list-status').should('contain', 'true');
     });
 
   });
