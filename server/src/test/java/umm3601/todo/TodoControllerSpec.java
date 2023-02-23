@@ -88,26 +88,26 @@ public class TodoControllerSpec {
     testTodos.add(
         new Document()
         .append("owner", "Harry")
-        .append("status",false)
+        .append("status", false)
         .append("body", "Metal under tension beggin you to touch and go")
         .append("category", "video games"));
     testTodos.add(
         new Document()
         .append("owner", "Nic")
-        .append("status",false)
+        .append("status", false)
         .append("body", "Revvin up your engine listen to her howlin roar")
         .append("category", "software design"));
     testTodos.add(
         new Document()
         .append("owner", "KK")
-        .append("status",true)
+        .append("status", true)
         .append("body", "Metal under tension beggin you to touch and go")
         .append("category", "homework"));
     alwinsId = new ObjectId();
     Document alwin = new Document()
         .append("_id", alwinsId)
         .append("owner", "Alwin")
-        .append("status",true)
+        .append("status", true)
         .append("body", "Headin into twilight spreadin out her wings tonight")
         .append("category", "software design");
 

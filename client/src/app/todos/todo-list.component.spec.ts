@@ -69,4 +69,46 @@ describe('TodoListComponent', () => {
   it('should contain todos with status \'false\'', () => {
     expect(todoList.serverFilteredTodo.some((todo: Todo) => todo.status === false)).toBe(true);
   });
+  it('should\'t\' contain todos with owner \'Batman\'', () => {
+    expect(todoList.serverFilteredTodo.some((todo: Todo) => todo.owner === 'Batman')).toBe(false);
+  });
+});
+
+describe ('Misbehaving Todo list', () => {
+  let todoList: TodoListComponent;
+  let fixture: ComponentFixture<TodoListComponent>;
+
+  let todoServiceStub: {
+    getTodos: () => Observable<Todo[]>;
+    getTodosFiltered: () => Observable<Todo[]>;
+  };
+
+  beforeEach(() => {
+    todoServiceStub = {
+      getTodos: () => new Observable(observer => {
+        observer.error('getTodos() Observer generates an error');
+      }),
+      getTodosFiltered: () => new Observable(observer => {
+        observer.error('getTodosFiltered() observer generates an error');
+      })
+    };
+
+    TestBed.configureTestingModule({
+      imports: [COMMON_IMPORTS],
+      declarations: [TodoListComponent],
+      providers: [{provide: TodoService, useValue: todoServiceStub}]
+    });
+  });
+
+  beforeEach(waitForAsync(() => {
+    TestBed.compileComponents().then(() => {
+      fixture = TestBed.createComponent(TodoListComponent);
+      todoList = fixture.componentInstance;
+      fixture.detectChanges();
+    });
+  }));
+
+  it('generates an error if we don\'t set up a TodoListService', () => {
+    expect(todoList.serverFilteredTodo).toBeUndefined();
+  });
 });
