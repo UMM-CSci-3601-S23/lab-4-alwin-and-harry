@@ -122,4 +122,15 @@ public class TodoController {
     Bson sortingOrder = sortOrder.equals("desc") ?  Sorts.descending(sortBy) : Sorts.ascending(sortBy);
     return sortingOrder;
   }
+
+  //method for adding a new todo
+  public void addNewTodo(Context ctx) {
+    //validating all the parts of the new todo
+    Todo newTodo = ctx.bodyValidator(Todo.class)
+      .check(todo -> todo.owner != null && todo.owner.length() > 0, "Todo must have a non-empty owner")
+      .check(todo -> todo.body != null && todo.body.length() > 0, "Todo must have a non-empty body")
+      .check(todo -> todo.status.is.boolean, "Todo status must be a boolean")
+      .get();
+
+  }
 }
