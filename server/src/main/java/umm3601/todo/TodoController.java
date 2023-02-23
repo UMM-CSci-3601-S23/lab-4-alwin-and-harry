@@ -105,13 +105,24 @@ public class TodoController {
   private Bson constructFilter(Context ctx) {
     List<Bson> filters = new ArrayList<>();
     if (ctx.queryParamMap().containsKey(STATUS_KEY)) {
-      filters.add(regex(STATUS_KEY, Pattern.quote(ctx.queryParam(STATUS_KEY))));
+      String completed = ctx.queryParamAsClass(STATUS_KEY, String.class).get();
+      boolean targetStatus;
+      if (completed.equals("incomplete")) {
+        targetStatus = false;
+      } else {
+        targetStatus = true;
+      }
+      filters.add(eq(STATUS_KEY, targetStatus));
     }
 
     Bson combinedFilter = filters.isEmpty() ? new Document() : and(filters);
 
     return combinedFilter;
   }
+
+
+
+  //private Bson constructFilter()
 
   private Bson constructSortingOrder(Context ctx) {
     String sortBy = Objects.requireNonNullElse(ctx.queryParam("sortby"), "status");

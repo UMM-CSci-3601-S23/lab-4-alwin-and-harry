@@ -81,6 +81,10 @@ public class Server {
     //List todos, filtered using query parameters
     server.get("/api/todos", todoController::getTodos);
 
+    //Get the specified todo
+    server.get("/api/todos/{id}", todoController::getTodos);
+
+
     // This catches any uncaught exceptions thrown in the server
     // code and turns them into a 500 response ("Internal Server
     // Error Response"). In general you'll like to *never* actually
