@@ -143,9 +143,17 @@ public class TodoControllerSpec {
   @Test
   public void canGetTodoWithStatusTrue() throws IOException {
     Map<String, List<String>> queryParams = new HashMap<>();
-    queryParams.put(TodoController.status_KEY, Arrays.asList(new String[] {"Complete"}));
+    queryParams.put(TodoController.STATUS_KEY, Arrays.asList(new String[] {"Complete"}));
     when(ctx.queryParamMap()).thenReturn(queryParams);
-    when(ctx.queryParam(TodoController.status_KEY)).thenReturn("Complete");
+    when(ctx.queryParam(TodoController.STATUS_KEY)).thenReturn("Complete");
+  }
+
+  @Test
+  public void canGetTodoWithStatusFalse() throws IOException {
+    Map<String, List<String>> queryParams = new HashMap<>();
+    queryParams.put(TodoController.STATUS_KEY, Arrays.asList(new String[] {"Incomplete"}));
+    when(ctx.queryParamMap()).thenReturn(queryParams);
+    when(ctx.queryParam(TodoController.STATUS_KEY)).thenReturn("Incomplete");
   }
 
   @Test

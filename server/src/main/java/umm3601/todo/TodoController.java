@@ -33,7 +33,7 @@ import io.javalin.http.NotFoundResponse;
  */
 public class TodoController {
 
-  static final String status_KEY = "status";
+  static final String STATUS_KEY = "status";
   static final String ID_KEY = "_id";
 
   private final JacksonMongoCollection<Todo> todoCollection;
@@ -104,8 +104,8 @@ public class TodoController {
 
   private Bson constructFilter(Context ctx) {
     List<Bson> filters = new ArrayList<>();
-    if (ctx.queryParamMap().containsKey(status_KEY)) {
-      filters.add(regex(status_KEY, Pattern.quote(ctx.queryParam(status_KEY))));
+    if (ctx.queryParamMap().containsKey(STATUS_KEY)) {
+      filters.add(regex(STATUS_KEY, Pattern.quote(ctx.queryParam(STATUS_KEY))));
     }
 
     Bson combinedFilter = filters.isEmpty() ? new Document() : and(filters);
