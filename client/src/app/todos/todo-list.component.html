@@ -11,8 +11,8 @@
             <mat-label>Status</mat-label>
             <mat-select (selectionChange)="getTodosFromServer()" [(ngModel)]="todoStatus" data-test="todoStatusSelect">
               <mat-option>--</mat-option>
-              <mat-option value="Complete">Complete</mat-option>
-              <mat-option value="Incomplete">Incomplete</mat-option>
+              <mat-option value="complete">Complete</mat-option>
+              <mat-option value="incomplete">Incomplete</mat-option>
             </mat-select>
             <mat-hint>Filtered on server</mat-hint>
           </mat-form-field>
@@ -27,7 +27,6 @@
             [(ngModel)]="todoBody" (input)="updateFilter()">
             <mat-hint>Filtered on client</mat-hint>
           </mat-form-field>
-
           <mat-form-field class="input-field">
             <mat-label>Category</mat-label>
             <input matInput data-test="todoCategoryInput" placeholder="Filter by Category"
