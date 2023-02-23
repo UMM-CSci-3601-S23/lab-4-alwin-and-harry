@@ -62,18 +62,6 @@
     </mat-card-content>
     </mat-card>
 
-    <mat-card appearance="outlined">
-      <mat-card-content>
-        <mat-nav-list class="todo-nav-list">
-          <h3 mat-subheader>Todos</h3>
-          <a mat-list-item *ngFor="let todo of this.filteredTodos" [routerLink]="['/todos', todo._id]" class="todo-list-item">
-            <span matListItemTitle class="todo-list-owner">{{todo.owner.toUpperCase()}}</span>
-            <span matListItemLine class="todo-list-category"><b>Category: </b>{{todo.category}}</span>
-            <span matListItemBody class="todo-list-body"><b>Body: </b>{{todo.body}}</span>
-            </a>
-      </mat-nav-list>
-    </mat-card-content>
-    </mat-card>
 
 
 
