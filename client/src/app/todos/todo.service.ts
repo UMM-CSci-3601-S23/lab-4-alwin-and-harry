@@ -1,7 +1,8 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { Todo, TodoCategory } from './todo';
+import { Todo } from './todo';
 
 @Injectable({
   providedIn: 'root'
@@ -15,6 +16,19 @@ export class TodoService {
 
   //Filtering using the database
 
+  getTodos(filters?: {status?: boolean}): Observable<Todo[]>{
+    let httpParams: HttpParams = new HttpParams();
+    if (filters) {
+      if (filters.status) {
+        httpParams = httpParams.set('status', filters.status.toString());
+      }
+    }
+
+    return this.httpClient.get<Todo[]>(this.todoUrl, {
+      params: httpParams,
+    });
+
+  }
 
   //Filtering using Angular
   //Body, owner, and, category are being filtered through Angular

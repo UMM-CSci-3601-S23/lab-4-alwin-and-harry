@@ -1,7 +1,7 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { filter } from 'rxjs';
+import { filter, of } from 'rxjs';
 
 import { Todo } from './todo';
 import { TodoService } from './todo.service';
@@ -60,10 +60,21 @@ describe('TodoService', () => {
 
   //testing for filtering on the database
   describe('getTodos()', () => {
-    it('should be created', () => {
-      expect(todoService).toBeTruthy();
+    it('correctly call api/todos with filter parameter \'true\'', () => {
+      const mockedMethod = spyOn(httpClient, 'get').and.returnValue(of(testTodos));
+      todoService.getTodos({status: true}).subscribe((todos: Todo[]) => {
+        expect(todos)
+          .withContext('expected todos')
+          .toEqual(testTodos);
+        expect(mockedMethod)
+          .withContext('one call')
+          .toHaveBeenCalledTimes(1);
+        expect(mockedMethod)
+          .withContext('talks to the correct endpoint')
+          .toHaveBeenCalledWith(todoService.todoUrl, { params: new HttpParams().set('status', 'true') });
     });
   });
+});
 
   describe('filterTodos()', () => {
     it('filters by body', () => {
@@ -95,3 +106,4 @@ describe('TodoService', () => {
 
 
 });
+

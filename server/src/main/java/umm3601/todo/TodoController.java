@@ -2,21 +2,13 @@ package umm3601.todo;
 
 import static com.mongodb.client.model.Filters.and;
 import static com.mongodb.client.model.Filters.eq;
-import static com.mongodb.client.model.Filters.regex;
 
-import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
-import java.util.regex.Pattern;
 
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Sorts;
-import com.mongodb.client.result.DeleteResult;
-
 import org.bson.Document;
 import org.bson.UuidRepresentation;
 import org.bson.conversions.Bson;
@@ -33,7 +25,7 @@ import io.javalin.http.NotFoundResponse;
  */
 public class TodoController {
 
-  static final String status_KEY = "status";
+  static final String STATUS_KEY = "status";
   static final String ID_KEY = "_id";
 
   private final JacksonMongoCollection<Todo> todoCollection;
@@ -104,14 +96,25 @@ public class TodoController {
 
   private Bson constructFilter(Context ctx) {
     List<Bson> filters = new ArrayList<>();
-    if (ctx.queryParamMap().containsKey(status_KEY)) {
-      filters.add(regex(status_KEY, Pattern.quote(ctx.queryParam(status_KEY))));
+    if (ctx.queryParamMap().containsKey(STATUS_KEY)) {
+      String completed = ctx.queryParamAsClass(STATUS_KEY, String.class).get();
+      boolean targetStatus;
+      if (completed.equals("incomplete")) {
+        targetStatus = false;
+      } else {
+        targetStatus = true;
+      }
+      filters.add(eq(STATUS_KEY, targetStatus));
     }
 
     Bson combinedFilter = filters.isEmpty() ? new Document() : and(filters);
 
     return combinedFilter;
   }
+
+
+
+  //private Bson constructFilter()
 
   private Bson constructSortingOrder(Context ctx) {
     String sortBy = Objects.requireNonNullElse(ctx.queryParam("sortby"), "status");

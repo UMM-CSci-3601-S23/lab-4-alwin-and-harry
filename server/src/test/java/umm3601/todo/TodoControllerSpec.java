@@ -2,11 +2,7 @@ package umm3601.todo;
 
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.mockito.ArgumentMatchers.argThat;
-import static com.mongodb.client.model.Filters.eq;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.io.IOException;
@@ -16,11 +12,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import javax.management.loading.PrivateClassLoader;
-
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 
 import com.mongodb.MongoClientSettings;
 import com.mongodb.ServerAddress;
@@ -36,20 +27,15 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import org.mockito.ArgumentMatcher;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import io.javalin.validation.BodyValidator;
-import io.javalin.validation.ValidationException;
-import io.javalin.validation.Validator;
 import io.javalin.http.BadRequestResponse;
 import io.javalin.http.Context;
 import io.javalin.http.HttpStatus;
 import io.javalin.http.NotFoundResponse;
-import io.javalin.json.JavalinJackson;
 
 @SuppressWarnings({"MagicNumber"})
 public class TodoControllerSpec {
@@ -102,26 +88,26 @@ public class TodoControllerSpec {
     testTodos.add(
         new Document()
         .append("owner", "Harry")
-        .append("status",false)
+        .append("status", false)
         .append("body", "Metal under tension beggin you to touch and go")
         .append("category", "video games"));
     testTodos.add(
         new Document()
         .append("owner", "Nic")
-        .append("status",false)
+        .append("status", false)
         .append("body", "Revvin up your engine listen to her howlin roar")
         .append("category", "software design"));
     testTodos.add(
         new Document()
         .append("owner", "KK")
-        .append("status",true)
+        .append("status", true)
         .append("body", "Metal under tension beggin you to touch and go")
         .append("category", "homework"));
     alwinsId = new ObjectId();
     Document alwin = new Document()
         .append("_id", alwinsId)
         .append("owner", "Alwin")
-        .append("status",true)
+        .append("status", true)
         .append("body", "Headin into twilight spreadin out her wings tonight")
         .append("category", "software design");
 
@@ -143,9 +129,17 @@ public class TodoControllerSpec {
   @Test
   public void canGetTodoWithStatusTrue() throws IOException {
     Map<String, List<String>> queryParams = new HashMap<>();
-    queryParams.put(TodoController.status_KEY, Arrays.asList(new String[] {"Complete"}));
+    queryParams.put(TodoController.STATUS_KEY, Arrays.asList(new String[] {"complete"}));
     when(ctx.queryParamMap()).thenReturn(queryParams);
-    when(ctx.queryParam(TodoController.status_KEY)).thenReturn("Complete");
+    when(ctx.queryParam(TodoController.STATUS_KEY)).thenReturn("complete");
+  }
+
+  @Test
+  public void canGetTodoWithStatusFalse() throws IOException {
+    Map<String, List<String>> queryParams = new HashMap<>();
+    queryParams.put(TodoController.STATUS_KEY, Arrays.asList(new String[] {"incomplete"}));
+    when(ctx.queryParamMap()).thenReturn(queryParams);
+    when(ctx.queryParam(TodoController.STATUS_KEY)).thenReturn("incomplete");
   }
 
   @Test

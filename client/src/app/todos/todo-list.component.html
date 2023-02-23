@@ -5,6 +5,20 @@
       <mat-card-title class="todo-list-title">Todos</mat-card-title>
       <mat-card-content class="flex-col">
         <!--Filters go here-->
+        <!--Status is filtered using the database-->
+        <div class="flex-row gap-10 flex-wrap">
+          <mat-form-field class="input-field">
+            <mat-label>Status</mat-label>
+            <mat-select (selectionChange)="getTodosFromServer()" [(ngModel)]="todoStatus" data-test="todoStatusSelect">
+              <mat-option>--</mat-option>
+              <mat-option value="complete">Complete</mat-option>
+              <mat-option value="incomplete">Incomplete</mat-option>
+            </mat-select>
+            <mat-hint>Filtered on server</mat-hint>
+          </mat-form-field>
+        </div>
+
+
         <div class="flex-row gap-10 flex-wrap">
           <!-- Both Body, Category, Owner are filtered in Angular-->
           <mat-form-field class="input-field">
@@ -13,7 +27,6 @@
             [(ngModel)]="todoBody" (input)="updateFilter()">
             <mat-hint>Filtered on client</mat-hint>
           </mat-form-field>
-
           <mat-form-field class="input-field">
             <mat-label>Category</mat-label>
             <input matInput data-test="todoCategoryInput" placeholder="Filter by Category"
@@ -34,6 +47,20 @@
   </div>
 </div>
 
+<!--List view-->
+    <mat-card appearance="outlined">
+      <mat-card-content>
+        <mat-nav-list class="todo-nav-list">
+          <h3 mat-subheader>Todos</h3>
+          <a mat-list-item *ngFor="let todo of this.filteredTodos" [routerLink]="['/todos', todo._id]" class="todo-list-item">
+            <span matListItemTitle class="todo-list-owner">{{todo.owner.toUpperCase()}}</span>
+            <span matListItemLine class="todo-list-category"><b>Category: </b>{{todo.category}}</span>
+            <span matListItemBody class="todo-list-body"><b>Body: </b>{{todo.body}}</span>
+            <span matListItemLine class="todo-list-status"><b>Todo Completion: </b>{{todo.status}}</span>
+            </a>
+      </mat-nav-list>
+    </mat-card-content>
+    </mat-card>
 
     <mat-card appearance="outlined">
       <mat-card-content>
@@ -47,7 +74,6 @@
       </mat-nav-list>
     </mat-card-content>
     </mat-card>
-
 
 
 
