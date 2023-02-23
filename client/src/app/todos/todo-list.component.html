@@ -6,17 +6,15 @@
       <mat-card-content class="flex-col">
         <!--Filters go here-->
         <!--Status is filtered using the database-->
-        <div class="flex-row gap flex-wrap">
+        <div class="flex-row gap-10 flex-wrap">
           <mat-form-field class="input-field">
-            <mat-label>Status<mat-label>
+            <mat-label>Status</mat-label>
             <mat-select (selectionChange)="getTodosFromServer()" [(ngModel)]="todoStatus" data-test="todoStatusSelect">
               <mat-option>--</mat-option>
               <mat-option value="Complete">Complete</mat-option>
               <mat-option value="Incomplete">Incomplete</mat-option>
             </mat-select>
             <mat-hint>Filtered on server</mat-hint>
-          </mat-label>
-          </mat-label>
           </mat-form-field>
         </div>
 
