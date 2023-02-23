@@ -6,6 +6,7 @@ import static com.mongodb.client.model.Filters.eq;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Sorts;
@@ -66,6 +67,12 @@ public class TodoController {
     }
   }
 
+  public void getLimitedTodos(Context ctx) {
+    int limit = ctx.queryParamAsClass("limit", Integer.class).get();
+    List<Todo> limitedTodos = todoCollection.find().limit(limit).into(new ArrayList<>());
+    ctx.json(limitedTodos);
+    ctx.status(HttpStatus.OK);
+}
   /**
    * Set the JSON body of the response to be a list of all the users returned from the database
    * that match any requested filters and ordering
@@ -123,3 +130,4 @@ public class TodoController {
     return sortingOrder;
   }
 }
+
