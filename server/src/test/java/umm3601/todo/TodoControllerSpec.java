@@ -1,8 +1,10 @@
 package umm3601.todo;
 
+import static com.mongodb.client.model.Filters.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.io.IOException;
@@ -36,6 +38,9 @@ import io.javalin.http.BadRequestResponse;
 import io.javalin.http.Context;
 import io.javalin.http.HttpStatus;
 import io.javalin.http.NotFoundResponse;
+import io.javalin.json.JavalinJackson;
+import io.javalin.validation.BodyValidator;
+import io.javalin.validation.ValidationException;
 
 @SuppressWarnings({"MagicNumber"})
 public class TodoControllerSpec {
@@ -45,6 +50,8 @@ public class TodoControllerSpec {
 
   private static MongoClient mongoClient;
   private static MongoDatabase db;
+
+  private static JavalinJackson javalinJackson = new JavalinJackson();
 
   @Mock
   private Context ctx;
@@ -172,6 +179,96 @@ public class TodoControllerSpec {
     });
 
     assertEquals("The requested todo was not found", exception.getMessage());
+  }
+
+  @Test
+  public void addTodo() throws IOException{
+    String testNewTodo = "{"
+      + "\"owner\": \"Test Todo\","
+      + "\"status\": true,"
+      + "\"body\": \"This is a test todo\","
+      + "\"category\": \"homework\""
+      + "}";
+    when(ctx.bodyValidator(Todo.class))
+      .then(value -> new BodyValidator<>(testNewTodo, Todo.class, javalinJackson));
+
+    todoController.addNewTodo(ctx);
+    verify(ctx).json(mapCaptor.capture());
+
+    verify(ctx).status(HttpStatus.CREATED);
+
+    //verify that our new todo was added with the correct ID
+    Document addedTodo = db.getCollection("todos")
+      .find(eq("_id", new ObjectId(mapCaptor.getValue().get("id")))).first();
+
+    assertNotEquals("", addedTodo.get("_id"));
+    assertEquals("Test Todo", addedTodo.get("owner"));
+    assertEquals(true, addedTodo.get("status"));
+    assertEquals("homework", addedTodo.get("category"));
+  }
+
+  @Test
+  public void addInvalidStatus() throws IOException {
+    String testNewTodo = "{"
+      + "\"owner\": \"Test Todo\","
+      + "\"status\": \" \","
+      + "\"body\": \"This is a test todo\","
+      + "\"category\": \"homework\""
+      + "}";
+    when(ctx.bodyValidator(Todo.class))
+      .then(value -> new BodyValidator<>(testNewTodo, Todo.class, javalinJackson));
+
+    assertThrows(ValidationException.class, () -> {
+      todoController.addNewTodo(ctx);
+    });
+  }
+
+  @Test
+  public void addInvalidOwner() throws IOException {
+    String testNewTodo = "{"
+      + "\"owner\": \"\","
+      + "\"status\": true,"
+      + "\"body\": \"This is a test todo\","
+      + "\"category\": \"homework\""
+      + "}";
+    when(ctx.bodyValidator(Todo.class))
+      .then(value -> new BodyValidator<>(testNewTodo, Todo.class, javalinJackson));
+
+    assertThrows(ValidationException.class, () -> {
+      todoController.addNewTodo(ctx);
+    });
+  }
+
+  @Test
+  public void addInvalidBody() throws IOException {
+    String testNewTodo = "{"
+      + "\"owner\": \"Test Todo\","
+      + "\"status\": true,"
+      + "\"body\": \"\","
+      + "\"category\": \"homework\""
+      + "}";
+    when(ctx.bodyValidator(Todo.class))
+      .then(value -> new BodyValidator<>(testNewTodo, Todo.class, javalinJackson));
+
+    assertThrows(ValidationException.class, () -> {
+      todoController.addNewTodo(ctx);
+    });
+  }
+
+  @Test
+  public void addInvalidCategory() throws IOException {
+    String testNewTodo = "{"
+      + "\"owner\": \"Test Todo\","
+      + "\"status\": true,"
+      + "\"body\": \"This is a test todo\","
+      + "\"category\": \"not real\""
+      + "}";
+    when(ctx.bodyValidator(Todo.class))
+      .then(value -> new BodyValidator<>(testNewTodo, Todo.class, javalinJackson));
+
+    assertThrows(ValidationException.class, () -> {
+      todoController.addNewTodo(ctx);
+    });
   }
 }
 
