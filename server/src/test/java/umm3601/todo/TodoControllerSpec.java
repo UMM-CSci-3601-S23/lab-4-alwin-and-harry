@@ -182,7 +182,7 @@ public class TodoControllerSpec {
   }
 
   @Test
-  public void addTodo() throws IOException{
+  public void addTodo() throws IOException {
     String testNewTodo = "{"
       + "\"owner\": \"Test Todo\","
       + "\"status\": true,"
