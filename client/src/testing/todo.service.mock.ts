@@ -43,7 +43,7 @@ export class MockTodoService extends TodoService {
   getTodos(filters?: { status?: boolean}): Observable<Todo[]> {
       return of (MockTodoService.testTodos);
   }
-
+/*
   getTodoById(id: string): Observable<Todo> {
     // If the specified ID is for one of the test users,
     // return that user, otherwise return `null` so
@@ -57,6 +57,6 @@ export class MockTodoService extends TodoService {
     } else {
       return of(null);
     }
-  }
+  }*/
 }
 
