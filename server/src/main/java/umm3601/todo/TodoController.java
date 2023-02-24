@@ -133,7 +133,6 @@ public class TodoController {
     Todo newTodo = ctx.bodyValidator(Todo.class)
       .check(todo -> todo.owner != null && todo.owner.length() > 0, "Todo must have a non-empty owner")
       .check(todo -> todo.body != null && todo.body.length() > 0, "Todo must have a non-empty body")
-      .check(todo -> todo.status, "Todo status must be a boolean")
       .check(todo -> todo.category.matches(CATEGORY_REGEX), "Todo must have a correct category")
       .get();
 

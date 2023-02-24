@@ -208,22 +208,6 @@ public class TodoControllerSpec {
   }
 
   @Test
-  public void addInvalidStatus() throws IOException {
-    String testNewTodo = "{"
-      + "\"owner\": \"Test Todo\","
-      + "\"status\": \" \","
-      + "\"body\": \"This is a test todo\","
-      + "\"category\": \"homework\""
-      + "}";
-    when(ctx.bodyValidator(Todo.class))
-      .then(value -> new BodyValidator<>(testNewTodo, Todo.class, javalinJackson));
-
-    assertThrows(ValidationException.class, () -> {
-      todoController.addNewTodo(ctx);
-    });
-  }
-
-  @Test
   public void addInvalidOwner() throws IOException {
     String testNewTodo = "{"
       + "\"owner\": \"\","
