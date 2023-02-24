@@ -87,7 +87,7 @@ export class AddTodoComponent implements OnInit{
           null,
           { duration: 2000 }
         );
-        this.router.navigate(['/todo/', newID]);
+        this.router.navigate(['/todos/', newID]);
       },
       error: err => {
         this.snackBar.open(
