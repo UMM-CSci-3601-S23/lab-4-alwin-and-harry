@@ -11,6 +11,7 @@ import { TodoService } from './todo.service';
   providers: []
 })
 export class TodoListComponent implements OnInit{
+[x: string]: any;
   public serverFilteredTodo: Todo[];
   public filteredTodos: Todo[];
 
@@ -21,6 +22,7 @@ export class TodoListComponent implements OnInit{
   public viewType: 'card' | 'list' = 'card';
 
   private ngUnsubscribe = new Subject<void>();
+
 
   constructor(private todoService: TodoService, private snackBar: MatSnackBar) {
   }
