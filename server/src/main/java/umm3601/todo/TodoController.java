@@ -68,10 +68,10 @@ public class TodoController {
   }
 
   public int getLimitedTodos(Context ctx) {
-    int limit = ctx.queryParamAsClass("limit", Integer.class).get();
-    List<Todo> limitedTodos = todoCollection.find().limit(limit).into(new ArrayList<>());
-    ctx.json(limitedTodos);
-    ctx.status(HttpStatus.OK);
+    int limit = -1;
+    if(ctx.queryParamMap().containsKey("limit")) {
+      limit = ctx.queryParamAsClass("limit", Integer.class).get();
+    }
     return limit;
 }
   /**
@@ -83,16 +83,25 @@ public class TodoController {
   public void getTodos(Context ctx) {
     Bson combinedFilter = constructFilter(ctx);
     Bson sortingOrder = constructSortingOrder(ctx);
-
+    int targetLimit = getLimitedTodos(ctx);
+    ArrayList<Todo> matchingTodos;
     // All three of the find, sort, and into steps happen "in parallel" inside the
     // database system. So MongoDB is going to find the users with the specified
     // properties, return those sorted in the specified manner, and put the
     // results into an initially empty ArrayList.
-    ArrayList<Todo> matchingTodos = todoCollection
+    if (targetLimit != -1) {
+      matchingTodos= todoCollection
       .find(combinedFilter)
       .sort(sortingOrder)
-      .limit(0)
+      .limit(targetLimit)
       .into(new ArrayList<>());
+    } else {
+      matchingTodos = todoCollection
+      .find(combinedFilter)
+      .sort(sortingOrder)
+      .into(new ArrayList<>());
+    }
+
 
     // Set the JSON body of the response to be the list of users returned by the database.
     // According to the Javalin documentation (https://javalin.io/documentation#context),
