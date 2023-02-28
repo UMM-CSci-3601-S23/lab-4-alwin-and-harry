@@ -52,11 +52,11 @@ describe('Todo list', () => {
     page.selectStatus('complete');
 
     //check if todos are being displayed
-    page.getTodoListItems().should('have.length.above', 1);
+    page.getTodoListItems().should('have.length.above', 10);
 
     //check if all given todos are complete
-    page.getTodoListItems().each($list => {
-      cy.wrap($list).find('.todo-list-status').should('contain', 'true');
+    page.getTodoListItems().each($todo => {
+      cy.wrap($todo).find('.todo-list-status').should('contain.text', 'Todo Completion: true');
     });
 
   });
