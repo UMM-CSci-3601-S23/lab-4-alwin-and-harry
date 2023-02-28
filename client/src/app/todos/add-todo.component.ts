@@ -50,7 +50,7 @@ export class AddTodoComponent implements OnInit{
         Validators.minLength(1),
         Validators.maxLength(50),
         (fc) => {
-          if (fc.value.toLowerCase() === 'zyx123' || fc.value.toLowerCase() === '123zyx') {
+          if (fc.value.toLowerCase() === 'abc123' || fc.value.toLowerCase() === '123abc') {
             return ({existingName: true});
           } else {
             return null;
