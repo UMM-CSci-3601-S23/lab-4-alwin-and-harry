@@ -59,7 +59,6 @@ export class AddTodoComponent implements OnInit{
       ])),
 
       status: new UntypedFormControl('', Validators.compose([
-        Validators.required,
       ])),
 
       body: new UntypedFormControl('', Validators.compose([

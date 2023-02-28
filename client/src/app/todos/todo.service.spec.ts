@@ -1,6 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { TestBed } from '@angular/core/testing';
+import { TestBed, waitForAsync } from '@angular/core/testing';
 import { filter, of } from 'rxjs';
 
 import { Todo } from './todo';
@@ -103,7 +103,22 @@ describe('TodoService', () => {
     });
   });
 
+  describe('Adding a todo using addTodo()', () => {
+    it('talks to the correct endpoint and is called once', waitForAsync(() => {
+      const TODO_ID = 'alwin_id';
+      const mockedMethod = spyOn(httpClient, 'post').and.returnValue(of(TODO_ID));
 
+      todoService.addTodo(testTodos[1]).subscribe((returnedString) => {
+        console.log('The thing returned was:' + returnedString);
+        expect(mockedMethod)
+          .withContext('one call')
+          .toHaveBeenCalledTimes(1);
+        expect(mockedMethod)
+          .withContext('talks to the correct endpoint')
+          .toHaveBeenCalledWith(todoService.todoUrl, testTodos[1]);
+      });
+    }));
+  });
 
 });
 
