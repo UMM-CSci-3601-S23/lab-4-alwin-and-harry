@@ -3,12 +3,17 @@ package umm3601.todo;
 import static com.mongodb.client.model.Filters.and;
 import static com.mongodb.client.model.Filters.eq;
 
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Sorts;
+
 import org.bson.Document;
 import org.bson.UuidRepresentation;
 import org.bson.conversions.Bson;
@@ -27,6 +32,8 @@ public class TodoController {
 
   static final String STATUS_KEY = "status";
   static final String ID_KEY = "_id";
+
+  private static final String CATEGORY_REGEX = "^(homework|groceries|software design|video games)$";
 
   private final JacksonMongoCollection<Todo> todoCollection;
 
@@ -121,5 +128,32 @@ public class TodoController {
     String sortOrder = Objects.requireNonNullElse(ctx.queryParam("sortorder"), "asc");
     Bson sortingOrder = sortOrder.equals("desc") ?  Sorts.descending(sortBy) : Sorts.ascending(sortBy);
     return sortingOrder;
+  }
+
+  //method for adding a new todo
+  public void addNewTodo(Context ctx) {
+    //validating all the parts of the new todo
+    Todo newTodo = ctx.bodyValidator(Todo.class)
+      .check(todo -> todo.owner != null && todo.owner.length() > 0, "Todo must have a non-empty owner")
+      .check(todo -> todo.body != null && todo.body.length() > 0, "Todo must have a non-empty body")
+      .check(todo -> todo.category.matches(CATEGORY_REGEX), "Todo must have a correct category")
+      .get();
+
+    todoCollection.insertOne(newTodo);
+
+    ctx.json(Map.of("id", newTodo._id));
+    ctx.status(HttpStatus.CREATED);
+  }
+
+  @SuppressWarnings("lgtm[java/weak-cryptographic-algorithm]")
+  public String md5(String str) throws NoSuchAlgorithmException {
+    MessageDigest md = MessageDigest.getInstance("MD5");
+    byte[] hashInBytes = md.digest(str.toLowerCase().getBytes(StandardCharsets.UTF_8));
+
+    StringBuilder result = new StringBuilder();
+    for (byte b : hashInBytes) {
+      result.append(String.format("%02x", b));
+    }
+    return result.toString();
   }
 }

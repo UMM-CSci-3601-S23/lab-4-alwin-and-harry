@@ -64,6 +64,7 @@ public class Server {
     server.start(SERVER_PORT);
 
     //User apis
+
     // List users, filtered using query parameters
     server.get("/api/users", userController::getUsers);
 
@@ -78,12 +79,15 @@ public class Server {
     server.post("/api/users", userController::addNewUser);
 
     //Todo apis
+
     //List todos, filtered using query parameters
     server.get("/api/todos", todoController::getTodos);
 
     //Get the specified todo
     server.get("/api/todos/{id}", todoController::getTodos);
 
+    //Add a new todo with the todo info being in the JSON body of the HTTP request
+    server.post("/api/todos", todoController::addNewTodo);
 
     // This catches any uncaught exceptions thrown in the server
     // code and turns them into a 500 response ("Internal Server
