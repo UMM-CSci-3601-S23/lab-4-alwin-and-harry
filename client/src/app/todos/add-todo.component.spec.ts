@@ -76,11 +76,12 @@ describe('AddTodoComponent', () => {
   describe('The status field', () => {
     let statusControl: AbstractControl;
     beforeEach(() => {
-      statusControl = addTodoComponent.addTodoForm.controls.owner;
+      statusControl = addTodoComponent.addTodoForm.controls.status;
     });
 
-    it('work with complete status');
-    statusControl.setValue('Complete');
-    expect(statusControl.valid).toBeTruthy();
+    it('should work with complete status', () => {
+      statusControl.setValue(true);
+      expect(statusControl.valid).toBeTruthy();
+    });
   });
 });
