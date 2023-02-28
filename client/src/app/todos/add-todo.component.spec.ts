@@ -84,4 +84,21 @@ describe('AddTodoComponent', () => {
       expect(statusControl.valid).toBeTruthy();
     });
   });
+
+  describe('The body field', () => {
+    let bodyControl: AbstractControl;
+    beforeEach(() => {
+      bodyControl = addTodoComponent.addTodoForm.controls.owner;
+    });
+
+    it('work with body', () => {
+    bodyControl.setValue('This is a test body');
+    expect(bodyControl.valid).toBeTruthy();
+    });
+
+    it('fail with empty body', () => {
+      bodyControl.setValue('');
+      expect(bodyControl.valid).toBeFalsy();
+      });
+  });
 });
