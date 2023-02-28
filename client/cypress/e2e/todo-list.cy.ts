@@ -38,7 +38,7 @@ describe('Todo list', () => {
 
   it('Should type something into the category filter and return the correct elements', () => {
     //get category 'homework'
-    cy.get('[data-test=todoCategoryInput]').type('homework');
+    page.selectCategory('homework');
 
     page.getTodoListItems().should('have.length.above', 1);
     //All of the listed todos should have the name we are filtering for

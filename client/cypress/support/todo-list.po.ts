@@ -15,4 +15,9 @@ export class TodoListPage{
     cy.get('[data-test=todoStatusSelect]').click();
     return cy.get(`mat-option[value="${value}"]`).click();
   }
+
+  selectCategory(todoCategoryInputString: string) {
+    cy.get('[data-test=todoCategoryInput]').as('input').click();
+    return cy.get('@input').type(todoCategoryInputString);
+  }
 }
