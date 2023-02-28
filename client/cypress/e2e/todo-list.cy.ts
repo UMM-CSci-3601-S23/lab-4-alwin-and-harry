@@ -40,7 +40,7 @@ describe('Todo list', () => {
     //get category 'homework'
     cy.get('[data-test=todoCategoryInput]').type('homework');
 
-    page.getTodoListItems().should('have.length.above', 0);
+    page.getTodoListItems().should('have.length.above', 1);
     //All of the listed todos should have the name we are filtering for
     page.getTodoListItems().each($list => {
       cy.wrap($list).find('.todo-list-category').should('contain','homework');
@@ -52,7 +52,7 @@ describe('Todo list', () => {
     page.selectStatus('complete');
 
     //check if todos are being displayed
-    page.getTodoListItems().should('have.length.above', 0);
+    page.getTodoListItems().should('have.length.above', 1);
 
     //check if all given todos are complete
     page.getTodoListItems().each($list => {
