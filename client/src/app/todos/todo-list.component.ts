@@ -19,6 +19,7 @@ export class TodoListComponent implements OnInit{
   public todoStatus: boolean;
   public todoBody: string;
   public todoCategory: TodoCategory;
+  public todoLimit: number;
   public viewType: 'card' | 'list' = 'card';
 
   private ngUnsubscribe = new Subject<void>();
@@ -51,7 +52,7 @@ export class TodoListComponent implements OnInit{
 
   public updateFilter(){
     this.filteredTodos = this.todoService.filterTodos(
-      this.serverFilteredTodo, { body: this.todoBody, category: this.todoCategory, owner: this.todoOwner }
+      this.serverFilteredTodo, { body: this.todoBody, category: this.todoCategory, owner: this.todoOwner, limit: this.todoLimit }
     );
   }
   ngOnInit(): void {
