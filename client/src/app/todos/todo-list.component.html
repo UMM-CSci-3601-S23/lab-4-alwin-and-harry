@@ -41,22 +41,23 @@
             <mat-hint>Filtered on Client</mat-hint>
           </mat-form-field>
 
+          <mat-form-field class="input-field">
+
+            <h1>Limit the Number of Todos</h1>
+              <label for="limit">Limit:</label>
+              <input matInput data-test="todoLimitInput" placeholder="Filter by Limit"
+              [(ngModel)]="todoLimit" (input)="updateFilter()">
+            </mat-form-field>
         </div>
       </mat-card-content>
     </mat-card>
   </div>
 </div>
-
+<!--
 <div class="container-fluid">
-<mat-form-field class="input-field">
 
-  <h1>Limit the Number of Todos</h1>
-    <label for="limit">Limit:</label>
-    <input matInput data-test="todoLimitInput" placeholder="Filter by Limit"
-    [(ngModel)]="getLimitedTodos" (input)="updateFilter()">
-  </mat-form-field>
 </div>
-
+-->
 <!--List view-->
     <mat-card appearance="outlined">
       <mat-card-content>
