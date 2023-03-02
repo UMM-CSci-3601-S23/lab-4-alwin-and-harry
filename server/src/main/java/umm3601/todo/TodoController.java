@@ -6,8 +6,6 @@ import static com.mongodb.client.model.Filters.eq;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
-
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Sorts;
 import org.bson.Document;
@@ -69,7 +67,7 @@ public class TodoController {
 
   public int getLimitedTodos(Context ctx) {
     int limit = -1;
-    if(ctx.queryParamMap().containsKey("limit")) {
+    if (ctx.queryParamMap().containsKey("limit")) {
       limit = ctx.queryParamAsClass("limit", Integer.class).get();
     }
     return limit;
@@ -90,7 +88,7 @@ public class TodoController {
     // properties, return those sorted in the specified manner, and put the
     // results into an initially empty ArrayList.
     if (targetLimit != -1) {
-      matchingTodos= todoCollection
+      matchingTodos = todoCollection
       .find(combinedFilter)
       .sort(sortingOrder)
       .limit(targetLimit)
