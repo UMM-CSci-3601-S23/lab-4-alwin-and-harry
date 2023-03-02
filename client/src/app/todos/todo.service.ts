@@ -1,6 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { filter, Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Todo } from './todo';
 import { map } from 'rxjs/operators';
@@ -34,7 +34,7 @@ export class TodoService {
   //Filtering using Angular
   //Body, owner, and, category are being filtered through Angular
 
-  filterTodos(todos: Todo[], filters?: { body?: string; category?: string; owner?: string }): Todo[] {
+  filterTodos(todos: Todo[], filters?: {limit: number; body?: string; category?: string; owner?: string}): Todo[] {
     let filteredTodos = todos;
 
     if (filters.body){
@@ -49,6 +49,9 @@ export class TodoService {
     if (filters.owner){
       filters.owner = filters.owner.toLowerCase();
       filteredTodos = filteredTodos.filter(todo => todo.owner.toLowerCase().indexOf(filters.owner) !== -1);
+    }
+    if (filters.limit){
+      filteredTodos = filteredTodos.slice(0, filters.limit);
     }
 
     return filteredTodos;

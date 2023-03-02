@@ -41,6 +41,13 @@
             <mat-hint>Filtered on Client</mat-hint>
           </mat-form-field>
 
+          <mat-form-field class="input-field">
+
+            <h1>Limit the Number of Todos</h1>
+              <label for="limit">Limit:</label>
+              <input matInput data-test="todoLimitInput" placeholder="Filter by Limit"
+              [(ngModel)]="todoLimit" (input)="updateFilter()">
+            </mat-form-field>
         </div>
 
         <button mat-raised-button class="add-todo-fab" matTooltip="Add Todo" matTooltipPosition="left" routerLink="/todos/new" data-test="addTodoButton">
@@ -50,7 +57,11 @@
     </mat-card>
   </div>
 </div>
+<!--
+<div class="container-fluid">
 
+</div>
+-->
 <!--List view-->
     <mat-card appearance="outlined">
       <mat-card-content>
