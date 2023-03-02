@@ -79,7 +79,10 @@ describe('TodoService', () => {
   describe('filterTodos()', () => {
     it('filters by body', () => {
       const todoBody = 'Revvin up your engine listen to her howlin roar';
-      const filteredTodos = todoService.filterTodos(testTodos, {body: todoBody});
+      const filteredTodos = todoService.filterTodos(testTodos, {
+        body: todoBody,
+        limit: 0
+      });
       expect(filteredTodos.length).toBe(1);
       filteredTodos.forEach(todo => {
         expect(todo.body.indexOf(todoBody)).toBeGreaterThanOrEqual(0);
@@ -87,7 +90,10 @@ describe('TodoService', () => {
     });
     it('filters by category',()=>{
       const todoCategory = 'video games';
-      const filteredTodos = todoService.filterTodos(testTodos,{category:todoCategory});
+      const filteredTodos = todoService.filterTodos(testTodos,{
+        category: todoCategory,
+        limit: 0
+      });
       expect(filteredTodos.length).toBe(1);
       filteredTodos.forEach(todo => {
         expect(todo.category.indexOf(todoCategory)).toBeGreaterThanOrEqual(0);
@@ -95,7 +101,10 @@ describe('TodoService', () => {
     });
     it('filters by owner', () => {
       const todoOwner = 'Nic';
-      const filteredTodos = todoService.filterTodos(testTodos, {owner: todoOwner});
+      const filteredTodos = todoService.filterTodos(testTodos, {
+        owner: todoOwner,
+        limit: 0
+      });
       expect(filteredTodos.length).toBe(1);
       filteredTodos.forEach(todo => {
         expect(todo.owner.indexOf(todoOwner)).toBeGreaterThanOrEqual(0);
